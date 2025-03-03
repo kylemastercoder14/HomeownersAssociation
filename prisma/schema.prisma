@@ -36,6 +36,64 @@ model Residents {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  business Business[]
+  vehicle  Vehicle[]
+  pet      Pet[]
+}
+
+model Business {
+  id            String @id @default(cuid())
+  name          String
+  scale         String
+  address       String
+  type          String
+  sector        String
+  operationType String
+  occupancy     String
+  area          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner   Residents @relation(fields: [ownerId], references: [id])
+
+  @@index([ownerId])
+}
+
+model Vehicle {
+  id          String @id @default(cuid())
+  type        String
+  model       String
+  brand       String
+  plateNumber String
+  color       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner   Residents @relation(fields: [ownerId], references: [id])
+
+  @@index([ownerId])
+}
+
+model Pet {
+  id    String @id @default(cuid())
+  name  String
+  type  String
+  breed String
+  color String
+  age   Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId String
+  owner   Residents @relation(fields: [ownerId], references: [id])
+
+  @@index([ownerId])
 }
 
 model Logs {

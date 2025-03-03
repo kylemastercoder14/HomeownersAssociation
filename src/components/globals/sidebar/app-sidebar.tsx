@@ -13,9 +13,11 @@ import {
   ScrollText,
   SquareTerminal,
   SquareUserRound,
+  Store,
   TicketCheck,
   Truck,
   Users,
+  Wallet,
   Warehouse,
 } from "lucide-react";
 
@@ -65,6 +67,12 @@ export function AppSidebar({
         icon: SquareUserRound,
         isActive: pathname === "/admin/employees",
       },
+      {
+        title: "Monthly Dues",
+        url: "/admin/monthly-dues",
+        icon: Wallet,
+        isActive: pathname === "/admin/monthly-dues",
+      },
     ],
     services: [
       {
@@ -84,6 +92,12 @@ export function AppSidebar({
         url: "/admin/rentals",
         icon: Warehouse,
         isActive: pathname === "/admin/rentals",
+      },
+      {
+        name: "Business Registration",
+        url: "/admin/business-registration",
+        icon: Store,
+        isActive: pathname === "/admin/business-registration",
       },
       {
         name: "Vehicle Registration",
