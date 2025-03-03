@@ -32,12 +32,12 @@ export const statuses = [
 
 export const availability = [
   {
-    value: "In stock",
-    label: "In stock",
+    value: "Active",
+    label: "Active",
   },
   {
-    value: "Out of stock",
-    label: "Out of stock",
+    value: "Inactive",
+    label: "Inactive",
   },
 ];
 

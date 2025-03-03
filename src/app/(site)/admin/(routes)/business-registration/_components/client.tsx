@@ -1,8 +1,8 @@
 import React from "react";
 import { DataTable } from "@/components/ui/data-table";
-import { columns, ResidentColumn } from "./column";
+import { columns, BusinessColumn } from "./column";
 
-const ResidentClient = ({ data }: { data: ResidentColumn[] }) => {
+const BusinessClient = ({ data }: { data: BusinessColumn[] }) => {
   return (
     <div>
       <DataTable searchKey="name" columns={columns} data={data} />
@@ -10,4 +10,4 @@ const ResidentClient = ({ data }: { data: ResidentColumn[] }) => {
   );
 };
 
-export default ResidentClient;
+export default BusinessClient;

@@ -369,7 +369,12 @@ const ResidentForm = ({ initialData }: { initialData: Residents | null }) => {
             />
           </div>
           <div className="flex justify-end items-center mt-3 gap-2">
-            <Button type="button" onClick={() => router.back()} variant="ghost">
+            <Button
+              disabled={isSubmitting}
+              type="button"
+              onClick={() => router.back()}
+              variant="ghost"
+            >
               Cancel
             </Button>
             <SubmitButton loading={isSubmitting} label={action} />

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AlertModal from "@/components/ui/alert-modal";
 import React from "react";
-import { deleteResident } from '@/actions/resident';
+import { deleteBusiness } from '@/actions/business';
 
 interface CellActionProps {
   id: string;
@@ -31,7 +31,7 @@ export const CellAction: React.FC<CellActionProps> = ({
     setLoading(true);
     setOpen(false);
     try {
-      const res = await deleteResident(id);
+      const res = await deleteBusiness(id);
       if (res.success) {
         toast.success(res.success);
         router.refresh();
@@ -65,7 +65,7 @@ export const CellAction: React.FC<CellActionProps> = ({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() =>
-              router.push(`/admin/residents/${id}`)
+              router.push(`/admin/business-registration/${id}`)
             }
           >
             <Edit className="w-4 h-4 mr-2" />
