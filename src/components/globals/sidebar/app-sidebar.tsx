@@ -141,7 +141,7 @@ export function AppSidebar({
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <Image
-          className="mt-3"
+          className="mt-3 object-cover"
           alt="Logo"
           src="/assets/logo.png"
           width={200}

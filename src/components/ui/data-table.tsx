@@ -47,7 +47,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
-import { availability, statuses } from "@/data/statuses";
+import { availability, gender, statuses } from "@/data/statuses";
 import { FacetedFilter } from "./faceted-filter";
 
 interface DataTableProps<TData, TValue> {
@@ -117,19 +117,26 @@ export function DataTable<TData, TValue>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="overflow-x-auto">
-      <div className="flex gap-3 items-center py-4">
+    <div className="overflow-x-auto px-1">
+      <div className="flex gap-3 border border-input bg-slate-50 px-4 py-4 mb-4 rounded-md items-center">
         <Input
           placeholder="Search keyword here..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-[150px] lg:w-[250px] bg-gray-50"
         />
         {table.getColumn("status") && (
           <FacetedFilter
             column={table.getColumn("status")}
             title="Status"
             options={statuses}
+          />
+        )}
+        {table.getColumn("gender") && (
+          <FacetedFilter
+            column={table.getColumn("gender")}
+            title="Filter Gender"
+            options={gender}
           />
         )}
         {table.getColumn("availability") && (

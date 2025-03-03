@@ -86,3 +86,7 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.shad-input {
+  @apply flex w-full pl-2 justify-start font-normal placeholder:text-muted-foreground border border-input focus-visible:ring-0 focus-visible:ring-offset-0 disabled:cursor-not-allowed !important;
+}

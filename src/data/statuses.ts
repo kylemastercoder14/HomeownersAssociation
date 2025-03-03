@@ -1,4 +1,11 @@
-import { CheckCircle, CircleOff, HelpCircle, Timer } from "lucide-react";
+import {
+  CheckCircle,
+  CircleOff,
+  HelpCircle,
+  Mars,
+  Timer,
+  Venus,
+} from "lucide-react";
 
 export const statuses = [
   {
@@ -31,5 +38,18 @@ export const availability = [
   {
     value: "Out of stock",
     label: "Out of stock",
+  },
+];
+
+export const gender = [
+  {
+    value: "Male",
+    label: "Male",
+    icon: Mars,
+  },
+  {
+    value: "Female",
+    label: "Female",
+    icon: Venus,
   },
 ];
