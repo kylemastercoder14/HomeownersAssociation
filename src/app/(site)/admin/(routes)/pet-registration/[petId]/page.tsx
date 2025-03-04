@@ -1,16 +1,16 @@
 import React from "react";
 import db from "@/lib/db";
-import VehicleForm from "@/components/forms/vehicle-form";
+import PetForm from "@/components/forms/pet-form";
 
 const Page = async (props: {
   params: Promise<{
-    vehicleId: string;
+    petId: string;
   }>;
 }) => {
   const params = await props.params;
-  const vehicle = await db.vehicle.findUnique({
+  const pet = await db.pet.findUnique({
     where: {
-      id: params.vehicleId,
+      id: params.petId,
     },
   });
 
@@ -21,7 +21,7 @@ const Page = async (props: {
   });
   return (
     <div>
-      <VehicleForm initialData={vehicle} residents={residents} />
+      <PetForm initialData={pet} residents={residents} />
     </div>
   );
 };
