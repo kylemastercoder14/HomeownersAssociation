@@ -34,12 +34,48 @@ model Residents {
   civilStatus   String
   occupation    String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  householdId String?
+  household   Household? @relation(fields: [householdId], references: [id], onDelete: SetNull, onUpdate: Restrict)
+
+  // Reverse relation to head
+  headOfHousehold Household? @relation("HouseholdHead")
 
   business Business[]
   vehicle  Vehicle[]
   pet      Pet[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([householdId])
+}
+
+model Household {
+  id      String @id @default(cuid())
+  block   String
+  lot     String
+  type    String // Owned, Rented
+  status  String // "Active", "Inactive", "Vacant", etc.
+  address String // Full address
+
+  // Characteristics
+  seniorCitizenCount Int @default(0)
+  pwdCount           Int @default(0)
+  soloParentCount    Int @default(0)
+
+  headId String    @unique
+  head   Residents @relation("HouseholdHead", fields: [headId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  residents Residents[] // uses default relation name for 1-N
+  due       Due[]
+  payment   Payment[]
+  ledger    Ledger[]
+
+  @@unique([block, lot])
+  @@index([headId])
 }
 
 model Business {
@@ -107,4 +143,95 @@ model Logs {
   Admin   Admin  @relation(fields: [adminId], references: [id])
 
   @@index([adminId])
+}
+
+model Due {
+  id          String    @id @default(cuid())
+  household   Household @relation(fields: [householdId], references: [id])
+  householdId String
+  amount      Float
+  dueDate     DateTime
+  status      DueStatus @default(UNPAID)
+  type        DueType   @default(MONTHLY_DUES) // NEW: Type of due (water, dues, etc.)
+  description String?
+  fiscalMonth Int       // 1-12 representing month
+  fiscalYear  Int       // Full year (e.g. 2023)
+  payments    Payment[]
+  lateFee     Float     @default(0)
+  meterReading Float?   // NEW: For water bills
+  previousReading Float? // NEW: For water bills
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([householdId])
+  @@index([status])
+  @@index([fiscalMonth, fiscalYear])
+  @@index([type])
+}
+
+enum DueType {
+  MONTHLY_DUES    // Regular HOA fees
+  WATER_BILL      // Water consumption charges
+  ELECTRICITY     // Electricity bills
+  SPECIAL_ASSESSMENT // Special fees
+  ARREARAGES      // Late payments
+  PENALTY         // Fines for violations
+}
+
+model Payment {
+  id            String    @id @default(cuid())
+  due           Due       @relation(fields: [dueId], references: [id])
+  dueId         String
+  household     Household @relation(fields: [householdId], references: [id])
+  householdId   String
+  amount        Float
+  paymentDate   DateTime  @default(now())
+  paymentMethod String // Cash, Check, Credit Card, Bank Transfer
+  referenceNo   String?
+  notes         String?
+  receivedBy    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([householdId])
+  @@index([dueId])
+  @@index([paymentDate])
+}
+
+enum DueStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  OVERDUE
+  WAIVED
+}
+
+model FeeSchedule {
+  id            String    @id @default(cuid())
+  name          String
+  amount        Float
+  frequency     String // Monthly, Quarterly, Annual
+  effectiveFrom DateTime
+  effectiveTo   DateTime?
+  appliesTo     String // ALL, OWNED, RENTED
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Ledger {
+  id              String    @id @default(cuid())
+  household       Household @relation(fields: [householdId], references: [id])
+  householdId     String
+  transactionDate DateTime
+  description     String
+  debit           Float     @default(0)
+  credit          Float     @default(0)
+  balance         Float
+  referenceType   String // DUE, PAYMENT, ADJUSTMENT
+  referenceId     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([householdId])
+  @@index([transactionDate])
 }

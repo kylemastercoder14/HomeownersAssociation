@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AlertModal from "@/components/ui/alert-modal";
@@ -65,15 +65,23 @@ export const CellAction: React.FC<CellActionProps> = ({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
             onClick={() =>
+              router.push(`/admin/residents/${id}/view-profile`)
+            }
+          >
+            <Eye className="w-4 h-4" />
+            View Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
               router.push(`/admin/residents/${id}`)
             }
           >
-            <Edit className="w-4 h-4 mr-2" />
+            <Edit className="w-4 h-4" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="w-4 h-4 mr-2" />
+            <Trash className="w-4 h-4" />
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

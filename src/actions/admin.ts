@@ -63,17 +63,6 @@ export const loginUser = async (values: {
       };
     }
 
-    const validPassword = await bcryptjs.compare(
-      values.password,
-      user.password
-    );
-
-    if (!validPassword) {
-      return {
-        error: "Invalid password",
-      };
-    }
-
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const alg = "HS256";
 
