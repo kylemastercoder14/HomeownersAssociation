@@ -39,30 +39,38 @@ import {
 import { HouseholdFilters } from "./_components/household-filters";
 import { HouseholdControls } from "./_components/household-controls";
 
-interface PageProps {
-  searchParams: {
-    search?: string;
-    status?: string;
-    type?: string;
-    page?: string;
-    pageSize?: string;
-  };
-}
-
-const Page = async ({ searchParams }: PageProps) => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) => {
   // Extract and type cast search params
-  const searchTerm = typeof searchParams.search === "string" ? searchParams.search : "";
-  const statusFilter = typeof searchParams.status === "string" ? searchParams.status : "";
-  const typeFilter = typeof searchParams.type === "string" ? searchParams.type : "";
-  const currentPage = parseInt(typeof searchParams.page === "string" ? searchParams.page : "1");
-  const pageSize = parseInt(typeof searchParams.pageSize === "string" ? searchParams.pageSize : "10");
+  const searchTerm =
+    typeof searchParams.search === "string" ? searchParams.search : "";
+  const statusFilter =
+    typeof searchParams.status === "string" ? searchParams.status : "";
+  const typeFilter =
+    typeof searchParams.type === "string" ? searchParams.type : "";
+  const currentPage = parseInt(
+    typeof searchParams.page === "string" ? searchParams.page : "1"
+  );
+  const pageSize = parseInt(
+    typeof searchParams.pageSize === "string" ? searchParams.pageSize : "10"
+  );
 
   const whereClause = {
     AND: [
       {
         OR: [
-          { address: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
-          { block: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
+          {
+            address: {
+              contains: searchTerm,
+              mode: Prisma.QueryMode.insensitive,
+            },
+          },
+          {
+            block: { contains: searchTerm, mode: Prisma.QueryMode.insensitive },
+          },
           { lot: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
         ],
       },
@@ -91,10 +99,19 @@ const Page = async ({ searchParams }: PageProps) => {
 
   const stats = {
     total: totalCount,
-    active: await db.household.count({ where: { ...whereClause, status: "Active" } }),
-    inactive: await db.household.count({ where: { ...whereClause, status: "Inactive" } }),
-    vacant: await db.household.count({ where: { ...whereClause, status: "Vacant" } }),
-    totalResidents: data.reduce((sum, h) => sum + (h.residents?.length || 0), 0),
+    active: await db.household.count({
+      where: { ...whereClause, status: "Active" },
+    }),
+    inactive: await db.household.count({
+      where: { ...whereClause, status: "Inactive" },
+    }),
+    vacant: await db.household.count({
+      where: { ...whereClause, status: "Vacant" },
+    }),
+    totalResidents: data.reduce(
+      (sum, h) => sum + (h.residents?.length || 0),
+      0
+    ),
     totalSpecialResidents: data.reduce(
       (sum, h) =>
         sum +
@@ -392,13 +409,17 @@ const Page = async ({ searchParams }: PageProps) => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem asChild>
-                                <Link href={`/admin/household-registration/${household.id}/view-details`}>
+                                <Link
+                                  href={`/admin/household-registration/${household.id}/view-details`}
+                                >
                                   <Eye className="h-4 w-4 mr-2" />
                                   View Details
                                 </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem asChild>
-                                <Link href={`/admin/household-registration/${household.id}`}>
+                                <Link
+                                  href={`/admin/household-registration/${household.id}`}
+                                >
                                   <Edit className="h-4 w-4 mr-2" />
                                   Edit
                                 </Link>
