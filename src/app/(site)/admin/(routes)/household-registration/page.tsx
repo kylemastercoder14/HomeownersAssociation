@@ -42,7 +42,7 @@ import { HouseholdControls } from "./_components/household-controls";
 const Page = async ({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   // Extract and type cast search params
   const searchTerm =
